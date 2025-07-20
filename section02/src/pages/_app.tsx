@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <header>
-        <Link href={"/"}>index!!!!!</Link>
+        <Link href={"/"}>index</Link>
         &nbsp;
         <Link href={"/search"} prefetch={false}>search</Link>
         &nbsp;
@@ -31,4 +31,3 @@ export default function App({ Component, pageProps }: AppProps) {
     </>
   )
 }
-///
