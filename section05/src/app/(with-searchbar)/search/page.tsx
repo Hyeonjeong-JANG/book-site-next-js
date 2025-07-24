@@ -11,7 +11,8 @@ export default async function Page({
 
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${encodeURIComponent(q)}`
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${encodeURIComponent(q)}`,
+    { cache: "force-cache" }
   );
 
 

@@ -1,4 +1,11 @@
+import { notFound } from "next/navigation";
 import style from "./page.module.css";
+
+// export const dynamicParams = false; // false: 아래의 1, 2, 3 빼고 모두 404가 뜨게 하기
+
+export function generateStaticParams() {
+  return [{ id: "1" }, { id: "2" }, { id: "3" }];
+}
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -6,6 +13,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${resolvedParams.id}`
   );
   if (!response.ok) {
+    if (response.status === 404) {
+      notFound();
+    }
     return <div>오류가 발생했습니다...</div>;
   }
 
