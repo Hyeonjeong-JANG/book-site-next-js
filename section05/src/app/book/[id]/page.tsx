@@ -1,12 +1,10 @@
 import style from "./page.module.css";
 
-export default async function Page({
-  params,
-}: {
-  params: { id: string | string[] };
-}) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${params.id}`);
-
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${resolvedParams.id}`
+  );
   if (!response.ok) {
     return <div>오류가 발생했습니다...</div>;
   }
