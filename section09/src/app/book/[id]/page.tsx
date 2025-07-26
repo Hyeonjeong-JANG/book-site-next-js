@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import style from "./page.module.css";
-import { ReviewData } from "@/types";
+import { BookData, ReviewData } from "@/types";
 import ReviewItem from "@/components/review-item";
 import ReviewEditor from "@/components/review-editor";
 import Image from "next/image";
@@ -71,14 +71,43 @@ async function ReviewList({ bookId }: { bookId: string }) {
   );
 }
 
-export default function Page({
+export async function generateMetadata({
   params
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${id}`,
+  );
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  const book: BookData = await response.json();
+
+  return {
+    title: `${book.title} - 한입북스`,
+    description: `${book.description}`,
+    openGraph: {
+      title: `${book.title} - 한입북스`,
+      description: `${book.description}`,
+      images: [book.coverImgUrl],
+    },
+  };
+}
+
+export default async function Page({
+  params
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
   return (<div className={style.container}>
-    <BookDetail bookId={params.id} />
-    <ReviewEditor bookId={params.id} />
-    <ReviewList bookId={params.id} />
+    <BookDetail bookId={id} />
+    <ReviewEditor bookId={id} />
+    <ReviewList bookId={id} />
   </div>);
 }

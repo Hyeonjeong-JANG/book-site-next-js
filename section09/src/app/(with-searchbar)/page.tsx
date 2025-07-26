@@ -6,6 +6,7 @@ import { delay } from "@/util/delay";
 import { Suspense } from "react";
 import BookItemSkeleton from "@/components/skeleton/book-item-skeleton";
 import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
+import { Metadata } from "next";
 
 // export const dynamic = '';
 // 특정 페이지의 유형을 강제로 Static, Dynamic 페이지로 설정(권장하진 않음)
@@ -48,13 +49,23 @@ async function RecoBooks() {
 
 export const dynamic = "force-dynamic";
 
+export const metadata: Metadata = {
+  title: "한입 북스",
+  description: "한입 북스에 등록된 도서를 만나보세요",
+  openGraph: {
+    title: "한입 북스",
+    description: "한입 북스에 등록된 도서를 만나보세요",
+    images: ['/thumbnail.png'],
+  },
+};
+
 export default async function Home() {
   return (
     <div className={style.container}>
       <section>
         <h3>지금 추천하는 도서</h3>
         <Suspense
-          fallback={<BookListSkeleton count={3}/>}
+          fallback={<BookListSkeleton count={3} />}
         >
           <RecoBooks />
         </Suspense>
@@ -62,7 +73,7 @@ export default async function Home() {
       <section>
         <h3>등록된 모든 도서</h3>
         <Suspense
-          fallback={<BookListSkeleton count={10}/>}
+          fallback={<BookListSkeleton count={10} />}
         >
           <AllBooks />
         </Suspense>
